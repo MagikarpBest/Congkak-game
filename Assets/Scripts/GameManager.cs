@@ -7,8 +7,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private TurnManager turnManager;
 
-
-
     private void OnEnable()
     {
         EventBus.OnPitClicked += PlayerTurn;
@@ -19,9 +17,12 @@ public class GameManager : MonoBehaviour
         EventBus.OnPitClicked -= PlayerTurn;
     }
 
-
+    // Trigger play turn
     private void PlayerTurn(int pitIndex)
     {
+        Player currentPlayer = turnManager.CurrentPlayer;
+        int seeds = boardManager.GetSeeds(pitIndex);
+
         if (!IsValidPit(pitIndex))
         {
             Debug.Log("INVALID PIT");
@@ -32,9 +33,6 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-
-        Player currentPlayer= turnManager.CurrentPlayer;
-        int seeds = boardManager.GetSeeds(pitIndex);
 
         boardManager.RemoveAllSeeds(pitIndex);
 
@@ -62,6 +60,7 @@ public class GameManager : MonoBehaviour
         HandleLastSeed(currentIndex);
     }
 
+    // Trigger condition based on where last seed lands
     private void HandleLastSeed(int lastIndex)
     {
         Player currentPlayer = turnManager.CurrentPlayer;
@@ -71,6 +70,7 @@ public class GameManager : MonoBehaviour
             (currentPlayer == Player.Player2 && lastIndex == 15)) 
         {
             Debug.Log($"{currentPlayer} gets an extra turn");
+            EventBus.OnBoardUpdated?.Invoke();
             return;
         }
 
@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
             boardManager.RemoveAllSeeds(oppositeIndex);
             boardManager.RemoveAllSeeds(lastIndex);
             Debug.Log($"{currentPlayer} took seeds from pit {oppositeIndex}");
+            EventBus.OnBoardUpdated?.Invoke();
         }
         // Switch turn
         EventBus.OnBoardUpdated?.Invoke();
@@ -143,6 +144,7 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    // Condition for end game
     private bool IsSideEmpty(Player player)
     {
         int start = player == Player.Player1 ? 0 : 8;
@@ -159,10 +161,12 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    // Check is picked pit valid (Player 1 cant pick player 2 pit)
     private bool IsValidPit(int pitIndex)
     {
         Player currentPlayer = turnManager.CurrentPlayer;
         int seeds = boardManager.GetSeeds(pitIndex);
+
         // If player 1 then can only select pit bottom vice versa
         if (currentPlayer == Player.Player1 && pitIndex >= 0 && pitIndex <= 6 && seeds > 0)
         {

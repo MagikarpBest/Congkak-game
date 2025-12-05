@@ -285,8 +285,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 69337870}
   - {fileID: 986933055}
+  - {fileID: 69337870}
   m_Father: {fileID: 1003399875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -446,7 +446,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'Player1
+
+    Store'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -706,7 +708,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'Player2
+
+    Store'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -859,6 +863,7 @@ MonoBehaviour:
   - {fileID: 1307973470}
   - {fileID: 2109051153}
   - {fileID: 624472990}
+  - {fileID: 135930283}
   - {fileID: 2114748494}
   - {fileID: 677577249}
   - {fileID: 893837477}
@@ -866,6 +871,7 @@ MonoBehaviour:
   - {fileID: 596555491}
   - {fileID: 1239059546}
   - {fileID: 2138322363}
+  - {fileID: 349204578}
   currentPlayerText: {fileID: 557144216}
 --- !u!1001 &383968116
 PrefabInstance:
@@ -1559,6 +1565,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 69337870}
     m_Modifications:
+    - target: {fileID: 378675873457190857, guid: 46bdf95d948122b4f9160f11f8b02e27, type: 3}
+      propertyPath: m_text
+      value: 2312
+      objectReference: {fileID: 0}
     - target: {fileID: 4578073804504408295, guid: 46bdf95d948122b4f9160f11f8b02e27, type: 3}
       propertyPath: m_Name
       value: PitButton (6)
@@ -2035,7 +2045,7 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ReverseArrangement: 1
 --- !u!1 &1003399871
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,8 +3308,8 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 591085195}
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1003399875}
-  - {fileID: 591085195}
   - {fileID: 1696094197}
