@@ -7,31 +7,46 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private TurnManager turnManager;
 
+    private bool isAnimating;
+
     private void OnEnable()
     {
-        EventBus.OnPitClicked += PlayerTurn;
+        EventBus.OnPitClicked += TriggerPlayerTurnCoroutine;
     }
 
     private void OnDisable()
     {
-        EventBus.OnPitClicked -= PlayerTurn;
+        EventBus.OnPitClicked -= TriggerPlayerTurnCoroutine;
+    }
+
+    private void TriggerPlayerTurnCoroutine(int pitIndex)
+    {
+        // If animation havent finish block click
+        if (isAnimating) return;
+
+        StartCoroutine(PlayerTurn(pitIndex));
     }
 
     // Trigger play turn
-    private void PlayerTurn(int pitIndex)
+    private IEnumerator PlayerTurn(int pitIndex)
     {
+        isAnimating = true;
+
         Player currentPlayer = turnManager.CurrentPlayer;
         int seeds = boardManager.GetSeeds(pitIndex);
 
         if (!IsValidPit(pitIndex))
         {
+            isAnimating = false;
             Debug.Log("INVALID PIT");
-            return;
+            yield break;
         }
 
         if (CheckGameOver())
         {
-            return;
+            isAnimating = false;
+            Debug.Log("Game Over");
+            yield break;
         }
 
         boardManager.RemoveAllSeeds(pitIndex);
@@ -55,9 +70,13 @@ public class GameManager : MonoBehaviour
 
             boardManager.AddSeeds(currentIndex);
             seeds--;
+            EventBus.OnBoardUpdated?.Invoke();
+            yield return new WaitForSeconds(0.5f);
         }
 
         HandleLastSeed(currentIndex);
+
+        isAnimating = false;
     }
 
     // Trigger condition based on where last seed lands
