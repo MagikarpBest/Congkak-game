@@ -1,4 +1,4 @@
-using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +14,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI currentPlayerText;
 
-    private Player currentPlayer;
+    private FlashEffect flashEffect;
+    private int[] previousSeedCounts;
 
     private void OnEnable()
     {
@@ -31,6 +32,8 @@ public class UIManager : MonoBehaviour
 
     private void InitializeUI()
     {
+        previousSeedCounts = new int[seedsText.Length];
+
         for (int i = 0; i < pits.Length; i++)
         {
             int index = i;
@@ -41,8 +44,10 @@ public class UIManager : MonoBehaviour
 
             // Set click action for buttons. (If button 2 is clicked then do it stuff based on the assigned index)
             pits[i].onClick.AddListener(() => PitClicked(index));
+
+            previousSeedCounts[i] = boardManager.GetSeeds(i);
+            seedsText[i].text = $"{previousSeedCounts[i]}";
         }
-        currentPlayer = turnManager.CurrentPlayer;
         UpdateSeedsUI();
     }
     private void PitClicked(int pitIndex)
@@ -57,16 +62,22 @@ public class UIManager : MonoBehaviour
 
         for (int i = 0; i < seedsText.Length; i++)
         {
-            seedsText[i].text = $"{boardManager.GetSeeds(i)}";
+            int currentCount = boardManager.GetSeeds(i);
+
+            if (currentCount != previousSeedCounts[i])
+            {
+                seedsText[i].text = $"{currentCount}";
+                seedsText[i].transform.DOPunchScale(transform.localScale * 0.3f, 0.3f);
+                previousSeedCounts[i] = currentCount;
+            }
         }
 
         if (pitVisuals != null)
         {
             for (int i = 0; i < pitVisuals.Length; i++)
-            {
+            { 
                 pitVisuals[i].SetVisualSeedCount(boardManager.GetSeeds(i));
             }
         }
     }
-
 }

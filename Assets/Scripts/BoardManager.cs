@@ -4,7 +4,7 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
     private int[] pits = new int[16];
-    private int startingSeeds = 2;
+    private int startingSeeds = 7;
 
 
     private void Start()

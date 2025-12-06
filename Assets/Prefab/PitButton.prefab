@@ -125,7 +125,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -165}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8322871394045267647
@@ -364,3 +364,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seedParent: {fileID: 8436008325957480926}
   pool: {fileID: 7139659466449775232, guid: 167c3c9d21f02574fbc052b92eecca34, type: 3}
+  isStore: 0

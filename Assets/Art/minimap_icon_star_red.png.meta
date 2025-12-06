@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c8f75b1c339a77b449490daebed900c1
+guid: 6e47454f786289049a650655739055c9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8192623336197379238
-    second: pattern_diagonal_transparent_small_0
+      213: -7709887964560162514
+    second: minimap_icon_star_red_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
