@@ -8,14 +8,11 @@ public class PitVisual : MonoBehaviour
     [SerializeField] private SeedVisualPool pool;
     [SerializeField] private bool isStore = false;
 
-
+    private int previousSeedCount = 7;
     private List<GameObject> activeSeeds = new List<GameObject>();
 
     public void SetVisualSeedCount(int amount)
     {
-        int oldCount = activeSeeds.Count;
-
-
         // Remove extras
         while (activeSeeds.Count > amount)
         {
@@ -45,10 +42,16 @@ public class PitVisual : MonoBehaviour
                 flashEffect.CallDamageFlash();
             }
 
+            if (amount > previousSeedCount)
+            {
+                SoundManager.PlaySound(SoundType.SEEDSPAWN);
+            }
+
             seed.transform.DOPunchScale(transform.localScale * 0.6f, 0.3f);
             activeSeeds.Add(seed);
         }
 
+        previousSeedCount = amount;
         LayoutSeeds();
     }
 

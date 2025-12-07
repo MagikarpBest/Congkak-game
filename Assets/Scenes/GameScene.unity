@@ -1848,9 +1848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea2e59a7d19c2141bea6ae7acee10fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundList:
-  - name: SEEDSPAWN
-    sounds: []
+  soundSO: {fileID: 11400000, guid: 4713cf892310bfb40b18acf9980076ed, type: 2}
 --- !u!1 &849965518
 GameObject:
   m_ObjectHideFlags: 0

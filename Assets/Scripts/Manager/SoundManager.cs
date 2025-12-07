@@ -1,62 +1,57 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public enum SoundType
 {
     SEEDSPAWN,
-
 }
 
-[RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
+[RequireComponent(typeof(AudioSource))]
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private SoundList[] soundList;
-    private static SoundManager instance;
+    [SerializeField] private SoundSO soundSO;
+    private static SoundManager instance = null;
     private AudioSource audioSource;
 
     private void Awake()
     {
-        instance = this;
+        if (!instance)
+        {
+            instance = this;
+            audioSource = GetComponent<AudioSource>();
+        }
+
     }
 
-    private void Start()
+    public static void PlaySound(SoundType sound, AudioSource source = null, float volume = 1)
     {
-        audioSource = GetComponent<AudioSource>();
-    }
-
-    public static void PlaySound(SoundType sound, float volume = 1)
-    {
-        AudioClip[] clips = instance.soundList[(int)sound].Sounds;  
+        SoundList soundList = instance.soundSO.sounds[(int)sound];
+        AudioClip[] clips = soundList.sounds;
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)]; // Play random sounds, prevent repetitive
 
-        if (clips == null || clips.Length == 0)
+        if (source)
         {
-            Debug.LogWarning("No clip asssigned/ clip Error");
-            return;
+            source.outputAudioMixerGroup = soundList.mixer;
+            source.clip = randomClip;
+            source.volume = volume * soundList.volume;
+            source.Play();
         }
-            
-        instance.audioSource.PlayOneShot(randomClip, volume);
+        else
+        {
+            instance.audioSource.outputAudioMixerGroup = soundList.mixer;
+            instance.audioSource.PlayOneShot(randomClip, volume * soundList.volume);
+        }
     }
 
-#if UNITY_EDITOR
-    private void OnEnable()
-    {
-        string[] name = Enum.GetNames(typeof(SoundType));
-        Array.Resize(ref soundList, name.Length );
-        for (int i = 0; i < soundList.Length; i++)
-        {
-            soundList[i].name = name[i];
-        }
-    }
-#endif
 
     [Serializable]
     public class SoundList
     {
-        public AudioClip[] Sounds { get => sounds; }
-
-        [SerializeField] public string name;
-        [SerializeField] private AudioClip[] sounds;
+        [HideInInspector] public string name;
+        [Range(0, 1)] public float volume;
+        public AudioMixerGroup mixer;   
+        public AudioClip[] sounds;
     }
 }
