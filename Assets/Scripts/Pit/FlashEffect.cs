@@ -73,6 +73,6 @@ public class FlashEffect : MonoBehaviour
         {
             materials[i].SetFloat("_FlashAmount", 0f);
         }
-        Debug.Log("flash called");
+        //Debug.Log("flash called");
     }
 }

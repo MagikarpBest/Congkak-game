@@ -20,12 +20,14 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnBoardUpdated += UpdateSeedsUI;
+        EventBus.OnTurnUpdated += UpdatePlayerTurn;
         EventBus.OnBoardManagerReady += InitializeUI;
     }
 
     private void OnDisable()
     {
         EventBus.OnBoardUpdated -= UpdateSeedsUI;
+        EventBus.OnTurnUpdated -= UpdatePlayerTurn;
         EventBus.OnBoardManagerReady -= InitializeUI;
     }
 
@@ -44,22 +46,41 @@ public class UIManager : MonoBehaviour
 
             // Set click action for buttons. (If button 2 is clicked then do it stuff based on the assigned index)
             pits[i].onClick.AddListener(() => PitClicked(index));
+        }
 
+        for (int i = 0; i < seedsText.Length; i++)
+        {
             previousSeedCounts[i] = boardManager.GetSeeds(i);
             seedsText[i].text = $"{previousSeedCounts[i]}";
         }
+        currentPlayerText.text = $"{turnManager.CurrentPlayer} turn";
         UpdateSeedsUI();
     }
+
     private void PitClicked(int pitIndex)
     {
         EventBus.OnPitClicked?.Invoke(pitIndex);
         Debug.Log($"Clicked pit {pitIndex}");
     }
 
+    private void UpdatePlayerTurn(bool turnUpdated)
+    {
+        // If get extra turn then dont update
+        // Else update show whose next
+        if (turnUpdated)
+        {
+            currentPlayerText.transform.DOPunchScale(transform.localScale * 0.3f, 0.3f);
+            currentPlayerText.text = $"{turnManager.NextPlayerCheck()} Turn";
+        }
+        else
+        {
+            currentPlayerText.transform.DOPunchScale(transform.localScale * 0.3f, 0.3f);
+            currentPlayerText.text = $"{turnManager.CurrentPlayer} Extra Turn!";
+        }
+    }
+
     private void UpdateSeedsUI()
     {
-        currentPlayerText.text = $"{turnManager.CurrentPlayer}";
-
         for (int i = 0; i < seedsText.Length; i++)
         {
             int currentCount = boardManager.GetSeeds(i);

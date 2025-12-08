@@ -15,6 +15,11 @@ public class TurnManager : MonoBehaviour
         currentPlayer = (currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;
     }
 
+    public Player NextPlayerCheck()
+    {
+        return (currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;
+    }
+
     // Helpers
     public Player CurrentPlayer => currentPlayer;
 

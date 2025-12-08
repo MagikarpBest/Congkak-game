@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,11 +11,19 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnPitClicked += TriggerPlayerTurnCoroutine;
+        EventBus.OnBoardManagerReady += TriggerMainMusic;
     }
 
     private void OnDisable()
     {
         EventBus.OnPitClicked -= TriggerPlayerTurnCoroutine;
+        EventBus.OnBoardManagerReady -= TriggerMainMusic;
+    }
+
+    private void TriggerMainMusic()
+    {
+        Debug.Log("Music Triggered");
+        //SoundManager.PlayMusic(SoundType.MAINMUSIC);
     }
 
     private void TriggerPlayerTurnCoroutine(int pitIndex)
@@ -90,6 +97,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"{currentPlayer} gets an extra turn");
             EventBus.OnBoardUpdated?.Invoke();
+            EventBus.OnTurnUpdated?.Invoke(false);
             return;
         }
 
@@ -115,6 +123,7 @@ public class GameManager : MonoBehaviour
             EventBus.OnBoardUpdated?.Invoke();
         }
         // Switch turn
+        EventBus.OnTurnUpdated?.Invoke(true);
         EventBus.OnBoardUpdated?.Invoke();
 
         turnManager.SwitchTurn();

@@ -18,3 +18,8 @@ MonoBehaviour:
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: c8f13dfea4127fb4d864d48f898e4eec, type: 3}
+  - name: MAINMUSIC
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: a5a0ccf2c205aeb429e923e401c54b17, type: 3}
