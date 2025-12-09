@@ -11,20 +11,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnPitClicked += TriggerPlayerTurnCoroutine;
-        EventBus.OnBoardManagerReady += TriggerMainMusic;
     }
 
     private void OnDisable()
     {
         EventBus.OnPitClicked -= TriggerPlayerTurnCoroutine;
-        EventBus.OnBoardManagerReady -= TriggerMainMusic;
     }
 
-    private void TriggerMainMusic()
-    {
-        Debug.Log("Music Triggered");
-        //SoundManager.PlayMusic(SoundType.MAINMUSIC);
-    }
 
     private void TriggerPlayerTurnCoroutine(int pitIndex)
     {
@@ -82,7 +75,7 @@ public class GameManager : MonoBehaviour
         }
 
         HandleLastSeed(currentIndex);
-
+        CheckGameOver();
         isAnimating = false;
     }
 
@@ -162,9 +155,22 @@ public class GameManager : MonoBehaviour
             int p2Score = boardManager.GetSeeds(15);
 
             Debug.Log($"Player1: {p1Score}, Player2: {p2Score}");
-            if (p1Score > p2Score) Debug.Log("Player1 Wins!");
-            else if (p2Score > p1Score) Debug.Log("Player2 Wins!");
-            else Debug.Log("Draw!");
+
+            if (p1Score > p2Score)
+            {
+                Debug.Log("Player1 Wins!");
+                EventBus.OnGameOver?.Invoke(1);  // Player 1 win
+            }
+            else if (p2Score > p1Score)
+            {
+                Debug.Log("Player2 Wins!");
+                EventBus.OnGameOver?.Invoke(2); // Player 2 win
+            }
+            else
+            {
+                Debug.Log("Draw!");
+                EventBus.OnGameOver?.Invoke(3); // Draw
+            }
 
             return true;
         }

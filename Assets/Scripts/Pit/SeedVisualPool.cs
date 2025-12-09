@@ -13,8 +13,11 @@ public class SeedVisualPool : MonoBehaviour
         if (pool.Count > 0)
         {
             GameObject obj = pool.Dequeue();
-            obj.SetActive(true);
-            return obj;
+            if (obj != null)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
         }
 
         return Instantiate(seedPrefab);

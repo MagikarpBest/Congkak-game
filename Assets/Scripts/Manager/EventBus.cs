@@ -9,4 +9,5 @@ public static class EventBus
 
     // Game Manager
     public static Action OnBoardManagerReady;
+    public static Action<int> OnGameOver;
 }

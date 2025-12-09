@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] private CircleTransition transition;
+    [SerializeField] private Button creditButton;
     [SerializeField] private Button startButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] GameObject creditPopup;
+    [SerializeField] private Button backButton;
 
     private void Start()
     {
@@ -19,6 +22,8 @@ public class MainMenuManager : MonoBehaviour
     {
         startButton.onClick.AddListener(() => StartCoroutine(StartButton()));
         quitButton.onClick.AddListener(()=> Application.Quit());
+        creditButton.onClick.AddListener(() => creditPopup.SetActive(true));
+        backButton.onClick.AddListener(() => creditPopup.SetActive(false));
         SoundManager.PlayMusic(SoundType.MAINMUSIC);
     }
 

@@ -11,17 +11,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button[] pits;
     [SerializeField] private TextMeshProUGUI[] seedsText;
     [SerializeField] private PitVisual[] pitVisuals;
+    [SerializeField] private CircleTransition transition;
 
     [SerializeField] private TextMeshProUGUI currentPlayerText;
+    [SerializeField] private GameObject gameOverPopup;
+    [SerializeField] private TextMeshProUGUI gameOverText;
 
-    private FlashEffect flashEffect;
     private int[] previousSeedCounts;
 
+    private void Start()
+    {
+        StartCoroutine(transition.GoingOutTransition());
+    }
     private void OnEnable()
     {
         EventBus.OnBoardUpdated += UpdateSeedsUI;
         EventBus.OnTurnUpdated += UpdatePlayerTurn;
         EventBus.OnBoardManagerReady += InitializeUI;
+        EventBus.OnGameOver += ShowGameover;
     }
 
     private void OnDisable()
@@ -29,6 +36,7 @@ public class UIManager : MonoBehaviour
         EventBus.OnBoardUpdated -= UpdateSeedsUI;
         EventBus.OnTurnUpdated -= UpdatePlayerTurn;
         EventBus.OnBoardManagerReady -= InitializeUI;
+        EventBus.OnGameOver -= ShowGameover;
     }
 
 
@@ -99,6 +107,24 @@ public class UIManager : MonoBehaviour
             { 
                 pitVisuals[i].SetVisualSeedCount(boardManager.GetSeeds(i));
             }
+        }
+    }
+
+    private void ShowGameover(int playerWon)
+    {
+        gameOverPopup.SetActive(true);
+
+        if (playerWon == 1)
+        {
+            gameOverText.text = $"Player 1 Win!";
+        }
+        else if (playerWon == 2)
+        {
+            gameOverText.text = $"Player 2 Win!";
+        }
+        else if (playerWon == 3)
+        {
+            gameOverText.text = $"Draw!";
         }
     }
 }
